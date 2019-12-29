@@ -6,16 +6,8 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #include <iostream>
-#include <chrono>
 #include <Tungsten/Shapes.hpp>
 #include "SpheresShaderProgram.hpp"
-
-double getTime()
-{
-    using namespace std::chrono;
-    duration<double> time = steady_clock::now().time_since_epoch();
-    return time.count();
-}
 
 class SpheresApp : public Tungsten::SdlApplication
 {
@@ -50,7 +42,6 @@ public:
 
         m_Program.offset.set(sin(SDL_GetTicks() / 400.0f));
 
-        auto time = getTime();
         Tungsten::drawElements(GL_TRIANGLES, m_ElementCount, GL_UNSIGNED_SHORT);
     }
 private:
