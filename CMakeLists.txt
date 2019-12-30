@@ -5,7 +5,7 @@
 ## This file is distributed under the BSD License.
 ## License text is included with the source distribution.
 ##****************************************************************************
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 project(Spheres)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -13,7 +13,11 @@ set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 FetchContent_Declare(Tungsten
     GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git")
-FetchContent_MakeAvailable(Tungsten)
+FetchContent_GetProperties(Tungsten)
+if (NOT Tungsten_POPULATED)
+    FetchContent_Populate(Tungsten)
+    add_subdirectory(${Tungsten_SOURCE_DIR} ${Tungsten_BINARY_DIR})
+endif ()
 
 list(APPEND CMAKE_MODULE_PATH ${Tungsten_SOURCE_DIR}/tools/cmake)
 
