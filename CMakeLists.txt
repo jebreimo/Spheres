@@ -11,15 +11,15 @@ project(Spheres)
 set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
-FetchContent_Declare(Tungsten
+FetchContent_Declare(tungsten
     GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git")
-FetchContent_GetProperties(Tungsten)
-if (NOT Tungsten_POPULATED)
-    FetchContent_Populate(Tungsten)
-    add_subdirectory(${Tungsten_SOURCE_DIR} ${Tungsten_BINARY_DIR})
+FetchContent_GetProperties(tungsten)
+if (NOT tungsten_POPULATED)
+    FetchContent_Populate(tungsten)
+    add_subdirectory(${tungsten_SOURCE_DIR} ${tungsten_BINARY_DIR})
 endif ()
 
-list(APPEND CMAKE_MODULE_PATH ${Tungsten_SOURCE_DIR}/tools/cmake)
+list(APPEND CMAKE_MODULE_PATH ${tungsten_SOURCE_DIR}/tools/cmake)
 
 include(TungstenTargetEmbedShaders)
 
