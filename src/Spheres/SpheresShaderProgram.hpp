@@ -14,12 +14,11 @@ public:
     void setup();
 
     Tungsten::ProgramHandle program;
-    Tungsten::Uniform<float> aspectRatio;
-
+    Tungsten::Uniform<Xyz::Vector2f> xParams;
+    Tungsten::Uniform<Xyz::Vector2f> yParams;
     Tungsten::Uniform<float> zScreen;
     Tungsten::Uniform<float> radius;
     Tungsten::Uniform<Xyz::Matrix3f> transform;
     Tungsten::Uniform<float> offset;
-
     GLuint positionAttribute;
 };

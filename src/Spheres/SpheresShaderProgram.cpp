@@ -11,21 +11,20 @@
 
 void SpheresShaderProgram::setup()
 {
-    program = Tungsten::createProgram();
-    auto vertexShader = Tungsten::createShader(GL_VERTEX_SHADER,
-                                               Spheres_vert);
-    Tungsten::attachShader(program, vertexShader);
+    using namespace Tungsten;
+    program = createProgram();
+    auto vertexShader = createShader(GL_VERTEX_SHADER, Spheres_vert);
+    attachShader(program, vertexShader);
+    auto fragmentShader = createShader(GL_FRAGMENT_SHADER, Spheres_frag);
+    attachShader(program, fragmentShader);
+    linkProgram(program);
+    useProgram(program);
 
-    auto fragmentShader = Tungsten::createShader(GL_FRAGMENT_SHADER,
-                                                 Spheres_frag);
-    Tungsten::attachShader(program, fragmentShader);
-    Tungsten::linkProgram(program);
-    Tungsten::useProgram(program);
-
-    positionAttribute = Tungsten::getVertexAttribute(program, "a_Position");
-    aspectRatio = Tungsten::getUniform<float>(program, "u_AspectRatio");
-    zScreen = Tungsten::getUniform<float>(program, "u_ZScreen");
-    radius = Tungsten::getUniform<float>(program, "u_Radius");
-    transform = Tungsten::getUniform<Xyz::Matrix3f>(program, "u_Transform");
-    offset = Tungsten::getUniform<float>(program, "u_Offset");
+    positionAttribute = getVertexAttribute(program, "a_Position");
+    xParams = getUniform<Xyz::Vector2f>(program, "u_XParams");
+    yParams = getUniform<Xyz::Vector2f>(program, "u_YParams");
+    zScreen = getUniform<float>(program, "u_ZScreen");
+    radius = getUniform<float>(program, "u_Radius");
+    transform = getUniform<Xyz::Matrix3f>(program, "u_Transform");
+    offset = getUniform<float>(program, "u_Offset");
 }

@@ -7,7 +7,8 @@
 //****************************************************************************
 #version 100
 
-uniform highp float u_AspectRatio;
+uniform highp vec2 u_XParams;
+uniform highp vec2 u_YParams;
 uniform highp float u_ZScreen;
 uniform highp float u_Radius;
 uniform highp mat3 u_Transform;
@@ -29,9 +30,9 @@ highp vec2 calculateSphereIntersections(highp vec3 vector,
 
 void main()
 {
-    highp vec3 xy = u_Transform * vec3(gl_PointCoord.x * u_AspectRatio,
-                                       gl_PointCoord.y,
-                                       1.0);
+    highp vec2 p = vec2(gl_FragCoord.x * u_XParams[0] + u_XParams[1],
+                        gl_FragCoord.y * u_YParams[0] + u_YParams[1]);
+    highp vec3 xy = u_Transform * vec3(p.x, p.y, 1.0);
 
     highp float cellSize = 3.0 * u_Radius;
     highp float column = floor(0.5 + xy.x / cellSize);

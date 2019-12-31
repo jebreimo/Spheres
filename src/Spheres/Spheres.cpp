@@ -34,7 +34,10 @@ public:
     {
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        m_Program.aspectRatio.set(aspectRatio());
+        auto[w, h] = windowSize();
+        auto aspect = 1 / float(h);
+        m_Program.xParams.set({2 * aspect, -1 * float(w) * aspect});
+        m_Program.yParams.set({2 * aspect, -1});
         m_Program.radius.set(0.5f + 0.49f * std::sin(SDL_GetTicks() / 5000.0f));
         m_Program.zScreen.set(5.0);
         m_Program.transform.set(Xyz::rotate3(SDL_GetTicks() / 3000.0f)
