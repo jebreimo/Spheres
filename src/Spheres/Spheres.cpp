@@ -54,12 +54,15 @@ private:
     GLsizei m_ElementCount = 0;
 };
 
-int main()
+int main(int argc, char* argv[])
 {
     SpheresApp app;
     try
     {
-        app.run();
+        Tungsten::WindowParameters windowParameters;
+        if (argc == 2 && argv[1] == std::string("--fullscreen"))
+            windowParameters.flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+        app.run(windowParameters);
     }
     catch (Tungsten::GlError& ex)
     {
