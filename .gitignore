@@ -31,5 +31,6 @@
 /.idea
 /bin
 /build
+/embuild
 /cmake-build-debug
 .DS_Store

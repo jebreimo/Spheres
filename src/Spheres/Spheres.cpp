@@ -59,9 +59,10 @@ int main(int argc, char* argv[])
     SpheresApp app;
     try
     {
-        Tungsten::WindowParameters windowParameters;
+        auto windowParameters = Tungsten::SdlApplication::getDefaultWindowParameters();
+        windowParameters.title = "Spheres";
         if (argc == 2 && argv[1] == std::string("--fullscreen"))
-            windowParameters.flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+            windowParameters.sdlFlags = SDL_WINDOW_FULLSCREEN_DESKTOP;
         app.run(windowParameters);
     }
     catch (Tungsten::GlError& ex)
