@@ -39,3 +39,8 @@ tungsten_target_embed_shaders(Spheres
         src/Spheres/Spheres-frag.glsl
         src/Spheres/Spheres-vert.glsl
     )
+
+if (EMSCRIPTEN)
+    set(EMSCRIPTEN_TARGET_NAME Spheres)
+    configure_file(src/emscripten/index.html.in index.html)
+endif ()
