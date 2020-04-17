@@ -9,12 +9,12 @@
 #include <Tungsten/Shapes.hpp>
 #include "SpheresShaderProgram.hpp"
 
-class SpheresApp : public Tungsten::SdlApplication
+class Spheres : public Tungsten::EventLoopCallbacks
 {
 public:
-    void setup() override
+    void onStartup(Tungsten::SdlApplication& app) final
     {
-        setSwapInterval(1);
+        app.setSwapInterval(1);
         m_VertexArray = Tungsten::generateVertexArray();
         Tungsten::bindVertexArray(m_VertexArray);
 
@@ -30,11 +30,11 @@ public:
         Tungsten::enableVertexAttribute(m_Program.positionAttribute);
     }
 
-    void draw() override
+    void onDraw(Tungsten::SdlApplication& app) final
     {
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        auto[w, h] = windowSize();
+        auto[w, h] = app.windowSize();
         auto aspect = 1 / float(h);
         m_Program.xParams.set({2 * aspect, -1 * float(w) * aspect});
         m_Program.yParams.set({2 * aspect, -1});
@@ -56,16 +56,13 @@ private:
 
 int main(int argc, char* argv[])
 {
-    SpheresApp app;
+    Tungsten::SdlApplication app("Spheres", std::make_unique<Spheres>());
     try
     {
-        auto windowParameters = Tungsten::SdlApplication::getDefaultWindowParameters();
-        windowParameters.title = "Spheres";
-        if (argc == 2 && argv[1] == std::string("--fullscreen"))
-            windowParameters.sdlFlags = SDL_WINDOW_FULLSCREEN_DESKTOP;
-        app.run(windowParameters);
+        app.parseCommandLineOptions(argc, argv);
+        app.run();
     }
-    catch (Tungsten::GlError& ex)
+    catch (Tungsten::TungstenException& ex)
     {
         std::cout << ex.what() << "\n";
         return 1;
