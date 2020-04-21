@@ -7,6 +7,7 @@
 //****************************************************************************
 #include <iostream>
 #include <Tungsten/Shapes.hpp>
+#include <Tungsten/SdlApplication.hpp>
 #include "SpheresShaderProgram.hpp"
 
 class Spheres : public Tungsten::EventLoopCallbacks
