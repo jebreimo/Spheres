@@ -10,7 +10,7 @@
 #include <Tungsten/SdlApplication.hpp>
 #include "SpheresShaderProgram.hpp"
 
-class Spheres : public Tungsten::EventLoopCallbacks
+class Spheres : public Tungsten::EventLoop
 {
 public:
     void onStartup(Tungsten::SdlApplication& app) final
