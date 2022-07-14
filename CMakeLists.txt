@@ -5,20 +5,29 @@
 ## This file is distributed under the BSD License.
 ## License text is included with the source distribution.
 ##****************************************************************************
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 project(Spheres)
 
 set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
-FetchContent_Declare(tungsten
-    GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git"
-    GIT_TAG v0.1.0)
-FetchContent_GetProperties(tungsten)
-if (NOT tungsten_POPULATED)
-    FetchContent_Populate(tungsten)
-    add_subdirectory(${tungsten_SOURCE_DIR} ${tungsten_BINARY_DIR})
+
+if (DEFINED LOCAL_SOURCE_PACKAGE_DIR OR DEFINED ENV{LOCAL_SOURCE_PACKAGE_DIR})
+    if (NOT LOCAL_SOURCE_PACKAGE_DIR)
+        set(LOCAL_SOURCE_PACKAGE_DIR $ENV{LOCAL_SOURCE_PACKAGE_DIR})
+    endif ()
 endif ()
+
+if (DEFINED LOCAL_SOURCE_PACKAGE_DIR)
+    FetchContent_Declare(tungsten
+        URL "file://${LOCAL_SOURCE_PACKAGE_DIR}/Tungsten-0.2.69.69.tar.gz")
+else ()
+    FetchContent_Declare(tungsten
+        GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git"
+        GIT_TAG v0.2.69)
+endif ()
+
+FetchContent_MakeAvailable(tungsten)
 
 list(APPEND CMAKE_MODULE_PATH ${tungsten_SOURCE_DIR}/tools/cmake)
 

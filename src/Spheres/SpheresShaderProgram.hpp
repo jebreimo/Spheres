@@ -14,11 +14,11 @@ public:
     void setup();
 
     Tungsten::ProgramHandle program;
-    Tungsten::Uniform<Xyz::Vector2f> xParams;
-    Tungsten::Uniform<Xyz::Vector2f> yParams;
-    Tungsten::Uniform<float> zScreen;
+    Tungsten::Uniform<Xyz::Vector2F> x_params;
+    Tungsten::Uniform<Xyz::Vector2F> y_params;
+    Tungsten::Uniform<float> z_screen;
     Tungsten::Uniform<float> radius;
-    Tungsten::Uniform<Xyz::Matrix3f> transform;
+    Tungsten::Uniform<Xyz::Matrix3F> transform;
     Tungsten::Uniform<float> offset;
-    GLuint positionAttribute;
+    GLuint position_attr;
 };

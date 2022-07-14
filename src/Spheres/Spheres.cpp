@@ -6,53 +6,61 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #include <iostream>
-#include <Tungsten/Shapes.hpp>
 #include <Tungsten/SdlApplication.hpp>
 #include "SpheresShaderProgram.hpp"
 
 class Spheres : public Tungsten::EventLoop
 {
 public:
-    void onStartup(Tungsten::SdlApplication& app) final
+    void on_startup(Tungsten::SdlApplication& app) final
     {
-        app.setSwapInterval(1);
-        m_VertexArray = Tungsten::generateVertexArray();
-        Tungsten::bindVertexArray(m_VertexArray);
+        app.set_swap_interval(1);
+        m_vertex_array = Tungsten::generate_vertex_array();
+        Tungsten::bind_vertex_array(m_vertex_array);
 
-        m_Buffers = Tungsten::generateBuffers(2);
-        Tungsten::ArrayBufferBuilder builder(3);
-        Tungsten::addRectangle(builder, Xyz::Rectangle<float>({-1, -1}, {2, 2}));
-        setBuffers(m_Buffers[0], m_Buffers[1], builder);
-        m_ElementCount = builder.elementCount();
+        float vertex_buffer[] = {-1, -1, 0,
+                                 1, -1, 0,
+                                 -1, 1, 0,
+                                 1, 1, 0};
+        short index_buffer[] = {0, 1, 2,
+                                1, 3, 2};
 
-        m_Program.setup();
-        Tungsten::defineVertexAttributePointer(m_Program.positionAttribute, 3,
-                                               GL_FLOAT, false, 0, 0);
-        Tungsten::enableVertexAttribute(m_Program.positionAttribute);
+        m_buffers = Tungsten::generate_buffers(2);
+        Tungsten::bind_buffer(GL_ARRAY_BUFFER, m_buffers[0]);
+        Tungsten::set_buffer_data(GL_ARRAY_BUFFER, sizeof(vertex_buffer),
+                                  vertex_buffer, GL_STATIC_DRAW);
+        Tungsten::bind_buffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[1]);
+        Tungsten::set_buffer_data(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_buffer),
+                                  index_buffer, GL_STATIC_DRAW);
+
+        m_program.setup();
+        Tungsten::define_vertex_attribute_pointer(m_program.position_attr, 3,
+                                                  GL_FLOAT, false, 0, 0);
+        Tungsten::enable_vertex_attribute(m_program.position_attr);
     }
 
-    void onDraw(Tungsten::SdlApplication& app) final
+    void on_draw(Tungsten::SdlApplication& app) final
     {
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        auto[w, h] = app.windowSize();
+        auto[w, h] = app.window_size();
         auto aspect = 1 / float(h);
-        m_Program.xParams.set({2 * aspect, -1 * float(w) * aspect});
-        m_Program.yParams.set({2 * aspect, -1});
-        m_Program.radius.set(0.5f + 0.49f * std::sin(SDL_GetTicks() / 5000.0f));
-        m_Program.zScreen.set(5.0);
-        m_Program.transform.set(Xyz::rotate3(SDL_GetTicks() / 3000.0f)
-                                * Xyz::translate3(std::sin(SDL_GetTicks() / 1900.0f), 0.0f));
+        auto ticks = float(SDL_GetTicks());
+        m_program.x_params.set({2 * aspect, -1 * float(w) * aspect});
+        m_program.y_params.set({2 * aspect, -1});
+        m_program.radius.set(0.5f + 0.49f * std::sin(ticks / 5000.0f));
+        m_program.z_screen.set(5.0);
+        m_program.transform.set(Xyz::rotate3(ticks / 3000.0f)
+                                * Xyz::translate3(std::sin(ticks / 1900.0f), 0.0f));
 
-        m_Program.offset.set(sin(SDL_GetTicks() / 400.0f));
+        m_program.offset.set(sin(ticks / 400.0f));
 
-        Tungsten::drawElements(GL_TRIANGLES, m_ElementCount, GL_UNSIGNED_SHORT);
+        Tungsten::draw_elements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT);
     }
 private:
-    std::vector<Tungsten::BufferHandle> m_Buffers;
-    Tungsten::VertexArrayHandle m_VertexArray;
-    SpheresShaderProgram m_Program;
-    GLsizei m_ElementCount = 0;
+    std::vector<Tungsten::BufferHandle> m_buffers;
+    Tungsten::VertexArrayHandle m_vertex_array;
+    SpheresShaderProgram m_program;
 };
 
 int main(int argc, char* argv[])
@@ -60,7 +68,7 @@ int main(int argc, char* argv[])
     Tungsten::SdlApplication app("Spheres", std::make_unique<Spheres>());
     try
     {
-        app.parseCommandLineOptions(argc, argv);
+        app.parse_command_line_options(argc, argv);
         app.run();
     }
     catch (Tungsten::TungstenException& ex)
