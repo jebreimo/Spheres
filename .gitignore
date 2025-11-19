@@ -32,5 +32,5 @@
 /bin
 /build
 /embuild
-/cmake-build-debug
+/cmake-build-*
 .DS_Store

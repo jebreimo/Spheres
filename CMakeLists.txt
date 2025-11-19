@@ -8,24 +8,17 @@
 cmake_minimum_required(VERSION 3.15)
 project(Spheres)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+
+if (EMSCRIPTEN)
+    set(YIMAGE_TIFF OFF)
+endif ()
 
 include(FetchContent)
 
-if (DEFINED LOCAL_SOURCE_PACKAGE_DIR OR DEFINED ENV{LOCAL_SOURCE_PACKAGE_DIR})
-    if (NOT LOCAL_SOURCE_PACKAGE_DIR)
-        set(LOCAL_SOURCE_PACKAGE_DIR $ENV{LOCAL_SOURCE_PACKAGE_DIR})
-    endif ()
-endif ()
-
-if (DEFINED LOCAL_SOURCE_PACKAGE_DIR)
-    FetchContent_Declare(tungsten
-        URL "file://${LOCAL_SOURCE_PACKAGE_DIR}/Tungsten-0.2.69.69.tar.gz")
-else ()
-    FetchContent_Declare(tungsten
-        GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git"
-        GIT_TAG v0.2.69)
-endif ()
+FetchContent_Declare(tungsten
+    GIT_REPOSITORY "https://github.com/jebreimo/Tungsten.git"
+    GIT_TAG v0.7.1)
 
 FetchContent_MakeAvailable(tungsten)
 
