@@ -46,4 +46,5 @@ tungsten_target_embed_shaders(Spheres
 if (EMSCRIPTEN)
     set(EMSCRIPTEN_TARGET_NAME Spheres)
     configure_file(src/emscripten/index.html.in index.html)
+    file(COPY src/emscripten/index.css DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif ()
